@@ -1,0 +1,25 @@
+{%- parse_json 'response_body' -%}
+  {{ shippo_response.body }}
+{%- endparse_json -%}
+{% log response_body, type: "RESPONSE BODY" %}
+
+{%- if shippo_response.status == 200 -%}
+
+  {%- assign now = 'now' | to_time | strftime: "%d-%m-%Y %H:%M:%S"  -%}
+  {
+    {%- if response_body.error -%}
+      "errors": [
+        {"message": "{{ response_body.error.message }}"}
+      ],
+    {%- endif -%}
+    "properties": [
+      { "name": "status", "value": "{{ response_body.status | downcase }}" },
+      { "name": "object_id", "value": "{{ response_body.object_id }}" },
+      { "name": "order_id", "value": "" }
+    ]
+  }
+{%- else -%}
+  {
+    "errors": {{ response_body.detail | json }}
+  }
+{%- endif -%}

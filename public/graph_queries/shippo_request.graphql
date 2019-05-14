@@ -1,0 +1,11 @@
+mutation shippo_request($template: String!, $data: HashObject)  {
+  api_call_send(
+    data: $data
+    template: { name: $template }
+  ) {
+    response{ status body }
+    errors {
+      message
+    }
+  }
+}

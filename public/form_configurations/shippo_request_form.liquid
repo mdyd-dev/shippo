@@ -1,0 +1,100 @@
+---
+name: shippo_request_form
+resource: modules/shippo/shippo_request
+resource_owner: anyone
+authorization_policies:
+fields:
+  success_message:
+    property_options:
+      virtual: true
+  signature_properties:
+    property_options:
+      virtual: true
+  properties:
+    request_type:
+    gateway:
+    data:
+    response:
+    request_errors:
+flash_notice: "{% if form.properties.request_errors != blank %}{{ form.properties.request_errors }}{% else %}{{ form.success_message }}{% endif %}"
+callback_actions: >
+default_payload: >
+  {% if form %}
+    {%- assign request = params.properties_attributes -%}
+    {%- assign shippo_api_template = "modules/shippo" | append: '/' | append: request.request_type -%}
+
+    {%- graphql response = 'modules/shippo/shippo_request', data: request.data, template: shippo_api_template -%}
+    {% log response, type: "RESPONSE" %}
+    {%- assign response_parser = "modules/shippo" | append: '/response_mapper/' | append: request.request_type -%}
+    {%- parse_json 'response_data' -%}
+      {%- include response_parser, shippo_response: response.api_call_send.response, data: request.data -%}
+    {%- endparse_json -%}
+
+    {% if response_data.errors == blank or response_data.errors == empty %}
+      {%- assign form_name = 'modules/shippo/' | append: request.request_type | append: '_form' -%}
+      {% if request.request_type contains 'delete' %}
+        {%- execute_query "modules/payments/delete_customization", form: form_name, id: response_data.id -%}
+        {% log g, type: "DEBUG DELETE" %}
+        {% log form_name, type: "Form Name" %}
+        {%- assign customization = g.customization_delete %}
+      {% elsif response_data.id != blank %}
+        {%- execute_query "modules/payments/update_customization", form: form_name, data: response_data, id: response_data.id -%}
+        {%- assign customization = g.customization_update %}
+        {% log g, type: "DEBUG UPDATE" %}
+      {% else %}
+        {% log response_data, type: "??????" %}
+        {% log response_parser, type: "??????" %}
+        {%- execute_query "modules/payments/create_customization", form: form_name, data: response_data -%}
+        {%- assign customization = g.customization_create %}
+        {% log g, type: "DEBUG CREATE" %}
+      {% endif %}
+
+
+      {
+        "properties_attributes": {
+          "response": "OK"
+        }
+      }
+    {% else %}
+      {% log response_data.errors, type: "errors" %}
+      {
+        "properties_attributes": {
+          "request_errors": {{ response_data.errors | json }}
+         }
+      }
+    {% endif %}
+  {% endif %}
+---
+{% comment %}
+
+{%- assign gateway = context.exports.payments.gateway_name -%}
+{%- assign template = "modules/shippo" | append: '/templates/' | append: request_type -%}
+{%- assign data_attribute = form_builder.fields.properties.data.name -%}
+{%- assign redirect_to = config.redirect_to | default: context.location.href -%}
+{%- include 'modules/stripe/shared/api_credentials' -%}
+{%- capture "signature" -%}
+{% include 'modules/payments/shared/calculate_signature',
+  data: data,
+  redirect_to: redirect_to
+%}
+{%- endcapture -%}
+
+{% form html-class: @request_type %}
+  <input type="hidden" name="redirect_to" value="{{ redirect_to }}" />
+  <input type="hidden" name="signature" value="{{ signature }}" />
+  <input type="hidden" name="{{ form_builder.fields.properties.gateway.name }}" value="{{ gateway }}" />
+  <input type="hidden" name="{{ form_builder.fields.properties.request_type.name }}" value="{{ request_type }}" />
+  {%- for property in data -%}
+    <input type="hidden"
+      name="{{ form_builder.fields.signature_properties.name }}[]" value="{{ property.first}}">
+    <input
+      type="hidden"
+      name="{{ data_attribute}}[{{property.first }}]"
+      value="{{ property.last }}"
+      data-{{ property.first }}="{{ property.last }}"
+    />
+  {%- endfor -%}
+
+  {%- include template, config: config -%}
+{% endform %}
+{% endcomment %}
