@@ -1,0 +1,8 @@
+name: refund
+properties:
+  - name: status
+    type: string
+  - name: object_id
+    type: string
+  - name: transaction
+    type: string

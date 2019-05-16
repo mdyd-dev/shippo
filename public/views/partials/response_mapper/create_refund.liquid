@@ -1,0 +1,23 @@
+{%- parse_json 'response_body' -%}
+  {{ shippo_response.body }}
+{%- endparse_json -%}
+{% log response_body, type: "RESPONSE BODY" %}
+
+{%- if shippo_response.status == 201 -%}
+  {
+    {%- if response_body.error -%}
+      "errors": [
+        {"message": "{{ response_body.error.message }}"}
+      ],
+    {%- endif -%}
+    "properties": [
+      { "name": "status", "value": "{{ response_body.status | downcase }}" },
+      { "name": "object_id", "value": "{{ response_body.object_id }}" },
+      { "name": "transaction", "value": "{{ response_body.transaction }}" }
+    ]
+  }
+{%- else -%}
+  {
+    "errors": {{ response_body | json }}
+  }
+{%- endif -%}

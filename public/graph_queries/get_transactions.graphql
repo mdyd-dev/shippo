@@ -1,0 +1,17 @@
+query get_transactions($object_id: String) {
+  customizations(
+    per_page: 20
+    name: "modules/shippo/transaction"
+    is_deleted: false
+    properties: [
+      { name: "object_id", value: $object_id }
+    ]
+    sort: [ { name: "id", order: "desc" } ]
+  ) {
+    results {
+      id
+      created_at
+      properties
+    }
+  }
+}

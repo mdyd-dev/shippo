@@ -1,0 +1,31 @@
+---
+slug: "transaction"
+---
+
+
+{% parse_json "transaction_data" %}
+{
+   "async": false,
+   "rate": "b04b69af5fb64449b0eb58e279014a1d",
+   "label_file_type": "PDF"
+}
+{% endparse_json %}
+
+
+{% parse_json "data" %}
+  {
+    "properties": [
+       { "name": "request_type", "value": "create_transaction" },
+       { "name": "data", "value":  "{{ transaction_data | json | escape_javascript }}" } 
+     ]
+  }
+{% endparse_json %}
+
+{% graphql g = "modules/payments/create_customization", form: "modules/shippo/shippo_request_form", data: data %}
+
+{{ g }}
+
+{% parse_json "transaction" %}{{ g.customization_create.properties.response }}{% endparse_json %}
+
+<p>{{ transaction.object_id }}</p>
+

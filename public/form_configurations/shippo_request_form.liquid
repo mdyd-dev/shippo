@@ -32,21 +32,15 @@ default_payload: >
       {%- assign form_name = 'modules/shippo/' | append: request.request_type | append: '_form' -%}
       {% if request.request_type contains 'delete' %}
         {%- execute_query "modules/payments/delete_customization", form: form_name, id: response_data.id -%}
-        {% log g, type: "DEBUG DELETE" %}
         {% log form_name, type: "Form Name" %}
         {%- assign customization = g.customization_delete %}
       {% elsif response_data.id != blank %}
         {%- execute_query "modules/payments/update_customization", form: form_name, data: response_data, id: response_data.id -%}
         {%- assign customization = g.customization_update %}
-        {% log g, type: "DEBUG UPDATE" %}
       {% else %}
-        {% log response_data, type: "??????" %}
-        {% log response_parser, type: "??????" %}
         {%- execute_query "modules/payments/create_customization", form: form_name, data: response_data -%}
         {%- assign customization = g.customization_create %}
       {% endif %}
-      
-      {% log response.api_call_send.response.body, type: "RESPONSE" %}
 
       {
         "properties_attributes": {

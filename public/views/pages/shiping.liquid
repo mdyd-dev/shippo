@@ -47,11 +47,6 @@ Calculate shiping price
 {% graphql g = "modules/payments/create_customization", form: "modules/shippo/shippo_request_form", data: data %}
 {% parse_json "shipment" %}{{ g.customization_create.properties.response }}{% endparse_json %}
 
-{% comment %}
-
-{% graphql s = "modules/shippo/get_shipments" %}
-{% assign shipment = s.customizations.results.first %}
-{% endcomment %}
 <p>{{ shipment.object_id }}</p>
 <p>
   Address To: {{ shipment.address_to }}
@@ -64,7 +59,7 @@ Calculate shiping price
     <li>
       {{ rate.amount | pricify: rate.currency }}, {{ rate.provider }}
       <span>{{ rate.duration_terms }}</span>
-      {% include "modules/shippo/create_transaction", rate_id: rate.id %}
+      <span>{{ rate.object_id }}</span>
     </li>
   {% endfor %}
 </ul>
