@@ -1,8 +1,14 @@
 name: shipment
 properties:
-  - name: "status"
+  - name: status
     type: string
-  - name: "object_id"
+  - name: object_id
     type: string
-  - name: "order_id"
+  - name: order_id
+    type: string
+  - name: rates
+    type: string
+  - name: address_from
+    type: string
+  - name: address_to
     type: string

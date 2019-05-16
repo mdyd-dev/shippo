@@ -12,7 +12,6 @@ fields:
       virtual: true
   properties:
     request_type:
-    gateway:
     data:
     response:
     request_errors:
@@ -24,7 +23,6 @@ default_payload: >
     {%- assign shippo_api_template = "modules/shippo" | append: '/' | append: request.request_type -%}
 
     {%- graphql response = 'modules/shippo/shippo_request', data: request.data, template: shippo_api_template -%}
-    {% log response, type: "RESPONSE" %}
     {%- assign response_parser = "modules/shippo" | append: '/response_mapper/' | append: request.request_type -%}
     {%- parse_json 'response_data' -%}
       {%- include response_parser, shippo_response: response.api_call_send.response, data: request.data -%}
@@ -46,13 +44,13 @@ default_payload: >
         {% log response_parser, type: "??????" %}
         {%- execute_query "modules/payments/create_customization", form: form_name, data: response_data -%}
         {%- assign customization = g.customization_create %}
-        {% log g, type: "DEBUG CREATE" %}
       {% endif %}
-
+      
+      {% log response.api_call_send.response.body, type: "RESPONSE" %}
 
       {
         "properties_attributes": {
-          "response": "OK"
+          "response": "{{ response.api_call_send.response.body | replace: '"', '\"' }}"
         }
       }
     {% else %}
@@ -65,36 +63,3 @@ default_payload: >
     {% endif %}
   {% endif %}
 ---
-{% comment %}
-
-{%- assign gateway = context.exports.payments.gateway_name -%}
-{%- assign template = "modules/shippo" | append: '/templates/' | append: request_type -%}
-{%- assign data_attribute = form_builder.fields.properties.data.name -%}
-{%- assign redirect_to = config.redirect_to | default: context.location.href -%}
-{%- include 'modules/stripe/shared/api_credentials' -%}
-{%- capture "signature" -%}
-{% include 'modules/payments/shared/calculate_signature',
-  data: data,
-  redirect_to: redirect_to
-%}
-{%- endcapture -%}
-
-{% form html-class: @request_type %}
-  <input type="hidden" name="redirect_to" value="{{ redirect_to }}" />
-  <input type="hidden" name="signature" value="{{ signature }}" />
-  <input type="hidden" name="{{ form_builder.fields.properties.gateway.name }}" value="{{ gateway }}" />
-  <input type="hidden" name="{{ form_builder.fields.properties.request_type.name }}" value="{{ request_type }}" />
-  {%- for property in data -%}
-    <input type="hidden"
-      name="{{ form_builder.fields.signature_properties.name }}[]" value="{{ property.first}}">
-    <input
-      type="hidden"
-      name="{{ data_attribute}}[{{property.first }}]"
-      value="{{ property.last }}"
-      data-{{ property.first }}="{{ property.last }}"
-    />
-  {%- endfor -%}
-
-  {%- include template, config: config -%}
-{% endform %}
-{% endcomment %}

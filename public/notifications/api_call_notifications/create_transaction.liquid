@@ -1,6 +1,6 @@
 ---
-name: create_shipment
-to: https://api.goshippo.com/shipments
+name: create_transaction
+to: https://api.goshippo.com/transactions
 enabled: true
 format: https
 trigger_condition: true
@@ -8,7 +8,7 @@ request_type: Post
 callback: >
   {%- assign response_data = response.body | to_hash -%}
   {% if response_data.error %}
-    {%- log response_data.error, type: 'modules/payments/create_account' -%}
+    {%- log response_data.error, type: 'modules/shippo/create_transaction' -%}
   {% endif %}
 headers: >
   {% if data %}

@@ -3,7 +3,7 @@
 {%- endparse_json -%}
 {% log response_body, type: "RESPONSE BODY" %}
 
-{%- if shippo_response.status == 200 -%}
+{%- if shippo_response.status == 201 -%}
 
   {%- assign now = 'now' | to_time | strftime: "%d-%m-%Y %H:%M:%S"  -%}
   {
@@ -15,7 +15,10 @@
     "properties": [
       { "name": "status", "value": "{{ response_body.status | downcase }}" },
       { "name": "object_id", "value": "{{ response_body.object_id }}" },
-      { "name": "order_id", "value": "" }
+      { "name": "order_id", "value": "" },
+      { "name": "rates", "value": "{{ response_body.rates | json | replace: '"', '\"' }}" },
+      { "name": "address_to", "value": "{{ response_body.address_to | json | replace: '"', '\"' }}" },
+      { "name": "address_from", "value": "{{ response_body.address_from | json | replace: '"', '\"' }}" }
     ]
   }
 {%- else -%}

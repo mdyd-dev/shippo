@@ -27,7 +27,7 @@ Calculate shiping price
       "width":"5",
       "height":"5",
       "distance_unit":"in",
-      "weight":"2",
+      "weight":"3.3",
       "mass_unit":"lb"
    }],
    "async": false
@@ -44,7 +44,27 @@ Calculate shiping price
   }
 {% endparse_json %}
 
-{% execute_query 'modules/shippo/set_constant', name: 'shippo_token', value: '<%= shippo_token =%>' %}
-
 {% graphql g = "modules/payments/create_customization", form: "modules/shippo/shippo_request_form", data: data %}
-{{ g }}
+{% parse_json "shipment" %}{{ g.customization_create.properties.response }}{% endparse_json %}
+
+{% comment %}
+
+{% graphql s = "modules/shippo/get_shipments" %}
+{% assign shipment = s.customizations.results.first %}
+{% endcomment %}
+<p>{{ shipment.object_id }}</p>
+<p>
+  Address To: {{ shipment.address_to }}
+</p>
+<p>
+  Address From: {{ shipment.address_from }}
+</p>
+<ul>
+  {% for rate in shipment.rates %}
+    <li>
+      {{ rate.amount | pricify: rate.currency }}, {{ rate.provider }}
+      <span>{{ rate.duration_terms }}</span>
+      {% include "modules/shippo/create_transaction", rate_id: rate.id %}
+    </li>
+  {% endfor %}
+</ul>
