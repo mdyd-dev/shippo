@@ -7,7 +7,7 @@ Calculate shiping price
 {% parse_json "shipment_data" %}
 {
   "address_from":{
-    "name":"Mr. Hippo",
+    "name":"Mr. Hip",
     "street1":"215 Clayton St.",
     "city":"San Francisco",
     "state":"CA",
@@ -22,14 +22,15 @@ Calculate shiping price
       "zip":"94105",
       "country":"US"
   },
-  "parcels":[{
-      "length":"5",
-      "width":"5",
-      "height":"5",
-      "distance_unit":"in",
-      "weight":"3.3",
-      "mass_unit":"lb"
-   }],
+  "parcels":[
+    {
+      "length":"90",
+      "width":"21",
+      "height":"21",
+      "distance_unit":"cm",
+      "weight":"1.3",
+      "mass_unit":"kg"
+      }   ],
    "async": false
 }
 {% endparse_json %}
@@ -54,6 +55,7 @@ Calculate shiping price
 <p>
   Address From: {{ shipment.address_from }}
 </p>
+{{ shipment }}
 <ul>
   {% for rate in shipment.rates %}
     <li>

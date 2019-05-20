@@ -1,6 +1,6 @@
 ---
-name: create_transaction
-to: https://api.goshippo.com/transactions
+name: create_refund
+to: https://api.goshippo.com/refunds
 enabled: true
 format: https
 trigger_condition: true
@@ -19,5 +19,4 @@ headers: >
     }
   {% endif %}
 ---
-{% log data, type: "DATA" %}
 {{ data | json }}
