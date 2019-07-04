@@ -19,5 +19,8 @@ headers: >
     }
   {% endif %}
 ---
-{% log data, type: "DATA" %}
-{{ data | json }}
+{
+  "label_file_type": "PDF",
+  "async": false,
+  "rate": "{{ data.rate_id }}"
+}

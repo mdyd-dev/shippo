@@ -24,10 +24,11 @@ default_payload: >
 
     {%- graphql response = 'modules/shippo/shippo_request', data: request.data, template: shippo_api_template -%}
     {%- assign response_parser = "modules/shippo" | append: '/response_mapper/' | append: request.request_type -%}
-    {%- parse_json 'response_data' -%}
+    {%- parse_json response_data -%}
       {%- include response_parser, shippo_response: response.api_call_send.response, data: request.data -%}
     {%- endparse_json -%}
 
+    {% log response_data, type: "DUAP DEBUG" %}
     {% if response_data.errors == blank or response_data.errors == empty %}
       {%- assign form_name = 'modules/shippo/' | append: request.request_type | append: '_form' -%}
       {% if request.request_type contains 'delete' %}

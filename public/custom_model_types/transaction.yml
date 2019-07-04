@@ -4,15 +4,15 @@ properties:
     type: string
   - name: object_id
     type: string
-  - name: parcel
+  - name: external_id
     type: string
-  - name: rate
+  - name: rate_id
     type: string
-  - name: tracking_number
+  - name: label_url
     type: string
   - name: tracking_status
     type: string
-  - name: tracking_url_provider
+  - name: tracking_number
     type: string
-  - name: label_url
+  - name: tracking_url_provider
     type: string
