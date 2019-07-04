@@ -1,7 +1,6 @@
 {%- parse_json 'response_body' -%}
   {{ shippo_response.body }}
 {%- endparse_json -%}
-{% log response_body, type: "RESPONSE BODY" %}
 
 {%- if shippo_response.status == 201 -%}
   {
