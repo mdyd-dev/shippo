@@ -13,11 +13,11 @@
       { "name": "status", "value": "{{ response_body.status | downcase }}" },
       { "name": "object_id", "value": "{{ response_body.object_id }}" },
       { "name": "rate_id", "value": "{{ response_body.rate }}" },
-      { "name": "external_id", "value": "{{ data.order_id }}" },
-      { "name": "label_url, "value": "{{ response_body.label_url }}" },
-      { "name": "tracking_status", "value": "{{ response_body.tracking_status }}" },
+      { "name": "external_id", "value": "{{ data.external_id }}" },
+      { "name": "label_url", "value": "{{ response_body.label_url }}" },
+      { "name": "tracking_status", "value": "{{ response_body.tracking_status | downcase }}" },
       { "name": "tracking_number", "value": "{{ response_body.tracking_number }}" },
-      { "name": "tracking_url_provider": "value": "{{ response_body.tracking_url_provider }}" }
+      { "name": "tracking_url_provider", "value": "{{ response_body.tracking_url_provider }}" }
     ]
   }
 {%- else -%}
