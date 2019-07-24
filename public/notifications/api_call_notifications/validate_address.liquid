@@ -1,0 +1,22 @@
+---
+name: validate_address
+to: https://api.goshippo.com/addresses
+enabled: true
+format: https
+trigger_condition: true
+request_type: Post
+callback: >
+  {%- assign response_data = response.body | to_hash -%}
+  {% if response_data.error %}
+    {%- log response_data.error, type: 'modules/shippo/validate_address' -%}
+  {% endif %}
+headers: >
+  {% if data %}
+    {%- include 'modules/shippo/shared/api_credentials' -%}
+    {
+      "Content-Type": "application/json",
+      "Authorization": "ShippoToken {{ context.exports.shippo.api.token }}"
+    }
+  {% endif %}
+---
+{{ data | json }}

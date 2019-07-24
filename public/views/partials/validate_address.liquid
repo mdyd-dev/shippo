@@ -1,0 +1,16 @@
+{% parse_json address_data %}
+{
+  "street1": "{{ address.street_number }} {{ address.street }}",
+  "city": "{{ address.city }}",
+  "state": "{{ address.state }}",
+  "zip": "{{ address.zip }}",
+  "country": "{{ address.country }}",
+  "validate": true
+}
+{% endparse_json %}
+
+{%- graphql response = 'modules/shippo/shippo_request', data: address_data, template: "modules/shippo/validate_address" -%}
+{% parse_json response_object %}
+  {{ response.api_call_send.response.body }}
+{% endparse_json %}
+{{ response_object.validation_results.is_valid }}
