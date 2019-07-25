@@ -1,6 +1,7 @@
 {%- parse_json address_data -%}
 {
-  "street1": "{{ address.street_number }} {{ address.street }}",
+  "street_no": "{{ address.street_number }}",
+  "street1": "{{ address.street }}",
   "city": "{{ address.city }}",
   "state": "{{ address.state }}",
   "zip": "{{ address.zip }}",
@@ -12,4 +13,5 @@
 {%- parse_json response_object -%}
   {{- response.api_call_send.response.body -}}
 {%- endparse_json -%}
+{%- log response_object, type: "DEBUG Shippo address validation" %}
 {{ response_object.validation_results.is_valid }}
