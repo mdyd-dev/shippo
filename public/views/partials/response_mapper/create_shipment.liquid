@@ -22,7 +22,10 @@
     ]
   }
 {%- else -%}
+  {% assign error = "" %}
+  {% assign error = error | append: response_body.__all__.first %}
+  {% assign error = error | append: response_body.detail %}
   {
-    "errors": {{ response_body.detail | json }}
+    "errors": {{ error | json }}
   }
 {%- endif -%}

@@ -28,7 +28,6 @@ default_payload: >
       {%- include response_parser, shippo_response: response.api_call_send.response, data: request.data -%}
     {%- endparse_json -%}
 
-    {% log response_data, type: "DUAP DEBUG" %}
     {% if response_data.errors == blank or response_data.errors == empty %}
       {%- assign form_name = 'modules/shippo/' | append: request.request_type | append: '_form' -%}
       {% if request.request_type contains 'delete' %}
@@ -49,10 +48,9 @@ default_payload: >
         }
       }
     {% else %}
-      {% log response_data.errors, type: "errors" %}
       {
         "properties_attributes": {
-          "request_errors": {{ response_data.errors | json }}
+          "request_errors": "{{ response_data.errors }}"
          }
       }
     {% endif %}
