@@ -1,0 +1,10 @@
+{%- parse_json transaction_data -%}
+  {
+    "properties": [
+      { "name": "tracking_status", "value": "delivered" }
+    ]
+  }
+{%- endparse_json -%}
+
+{%- graphql g = "modules/shippo/update_customization", form: "modules/shippo/update_transaction_tracking_status_callback_form", data: transaction_data, id: transaction.id -%}
+{%- log g, type: "Transaction delivered" %}

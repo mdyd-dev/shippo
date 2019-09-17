@@ -1,0 +1,34 @@
+---
+name: "update_transaction_tracking_status_form"
+resource: modules/shippo/transaction
+resource_owner: anyone
+fields:
+  id:
+  properties:
+    status:
+    object_id:
+    external_id:
+default_payload: ""
+authorization_policies:
+async_callback_actions:
+  delay: 0
+  content: >
+    {% log "processing update_transaction_tracking_status_form", type: "DEBUG" %}
+    {% parse_json data %}
+      { "rate_id": "{{ form.properties.object_id }}" }
+    {% endparse_json %}
+    {% graphql g = 'modules/shippo/shippo_request', template: 'modules/shippo/get_transaction', data: data %}
+
+    {% assign response = g.api_call_send.response %}
+    {%- parse_json 'response_body' -%}
+      {{ response.body }}
+    {%- endparse_json -%}
+    {%- if response.status == 200 -%}
+      {% if response_body.tracking_status == 'DELIVERED' or response_body.tracking_status.status == 'DELIVERED' %}
+        {% include "modules/shippo/actions/transaction/mark_as_delivered", transaction: form %}
+        {% include "modules/ecommerce/orders/actions/schedule_payout", order_id: form.properties.external_id %}
+      {% endif %}
+    {%- endif -%}
+
+---
+

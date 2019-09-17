@@ -1,0 +1,17 @@
+---
+name: get_transaction
+to: https://api.goshippo.com/transactions/{{ data.rate_id }}
+enabled: true
+format: https
+trigger_condition: true
+request_type: Get
+callback:
+headers: >
+  {% if data %}
+    {%- include 'modules/shippo/shared/api_credentials' -%}
+    {
+      "Content-Type": "application/json",
+      "Authorization": "ShippoToken {{ context.exports.shippo.api.token }}"
+    }
+  {% endif %}
+---

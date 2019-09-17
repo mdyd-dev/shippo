@@ -1,0 +1,10 @@
+mutation update_transaction_tracking_status($id: ID!) {
+  customization_update(
+    model: {}
+    form_configuration_name: "modules/shippo/update_transaction_tracking_status_form"
+    id: $id
+  ) {
+    id
+    properties
+  }
+}
