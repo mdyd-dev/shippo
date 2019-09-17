@@ -1,8 +1,8 @@
 {% graphql t = "modules/shippo/get_transactions" %}
 {% for transaction in t.customizations.results %}
   <p>
-  {{ transaction.properties.tracking_number }}
-  {{ transaction.properties.tracking_status }}
-  <a href="{{ transaction.properties.label_url }}">Print Label</a>
+  {{ transaction.tracking_number }}
+  {{ transaction.tracking_status }}
+  <a href="{{ transaction.label_url }}">Print Label</a>
   </p>
 {% endfor %}

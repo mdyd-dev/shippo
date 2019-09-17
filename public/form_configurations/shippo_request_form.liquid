@@ -31,14 +31,14 @@ default_payload: >
     {% if response_data.errors == blank or response_data.errors == empty %}
       {%- assign form_name = 'modules/shippo/' | append: request.request_type | append: '_form' -%}
       {% if request.request_type contains 'delete' %}
-        {%- execute_query "modules/payments/delete_customization", form: form_name, id: response_data.id -%}
+        {%- execute_query "modules/shippo/delete_customization", form: form_name, id: response_data.id -%}
         {% log form_name, type: "Form Name" %}
         {%- assign customization = g.customization_delete %}
       {% elsif response_data.id != blank %}
-        {%- execute_query "modules/payments/update_customization", form: form_name, data: response_data, id: response_data.id -%}
+        {%- execute_query "modules/shippo/update_customization", form: form_name, data: response_data, id: response_data.id -%}
         {%- assign customization = g.customization_update %}
       {% else %}
-        {%- execute_query "modules/payments/create_customization", form: form_name, data: response_data -%}
+        {%- execute_query "modules/shippo/create_customization", form: form_name, data: response_data -%}
         {%- assign customization = g.customization_create %}
       {% endif %}
 
