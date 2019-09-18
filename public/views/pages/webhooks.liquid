@@ -12,11 +12,7 @@ authorization_policies:
   {% graphql g_transactions = "modules/shippo/get_transaction", object_id: transaction.object_id %}
   {% assign existing_transaction = g_transactions.customizations.results.first %}
   {% if existing_trnsaction.id != blank %}
-    {% graphql "modules/shippo/update_transaction_tracking_status" %}
-    {% parse_json data %}
-      { "rate_id": "{{ existing_transaction.object_id }}" }
-    {% endparse_json %}
-    {% graphql g = 'modules/shippo/shippo_request', template: 'modules/shippo/get_transaction', data: data %}
+    {% graphql g = "modules/shippo/update_transaction_tracking_status", existing_transaction.id %}
   {% endif %}
 {% endif %}
 
