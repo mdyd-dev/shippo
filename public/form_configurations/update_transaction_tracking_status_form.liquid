@@ -13,7 +13,6 @@ authorization_policies:
 async_callback_actions:
   delay: 0
   content: >
-    {% log "processing update_transaction_tracking_status_form", type: "DEBUG" %}
     {% parse_json data %}
       { "rate_id": "{{ form.properties.object_id }}" }
     {% endparse_json %}
@@ -23,9 +22,10 @@ async_callback_actions:
     {%- parse_json 'response_body' -%}
       {{ response.body }}
     {%- endparse_json -%}
+
     {%- if response.status == 200 -%}
       {% if response_body.tracking_status == 'DELIVERED' or response_body.tracking_status.status == 'DELIVERED' %}
-        {% include "modules/shippo/actions/transaction/mark_as_delivered", transaction: form %}
+        {% include "modules/shippo/actions/transaction/mark_as_delivered", transaction_id: form.id %}
         {% include "modules/ecommerce/orders/actions/schedule_payout", order_id: form.properties.external_id %}
       {% endif %}
     {%- endif -%}

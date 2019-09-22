@@ -6,5 +6,5 @@
   }
 {%- endparse_json -%}
 
-{%- graphql g = "modules/shippo/update_customization", form: "modules/shippo/update_transaction_tracking_status_callback_form", data: transaction_data, id: transaction.id -%}
+{%- graphql g = "modules/shippo/update_customization", form: "modules/shippo/update_transaction_tracking_status_callback_form", data: transaction_data, id: transaction_id -%}
 {%- log g, type: "Transaction delivered" %}
