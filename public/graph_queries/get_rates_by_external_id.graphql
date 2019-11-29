@@ -1,0 +1,27 @@
+query get_rates_by_eternal_id($external_id: String!) {
+  models(
+    per_page: 20
+    filter: {
+      name: {value: "modules/shippo/rate"}
+      properties: [{name: "external_id", value: $external_id}]
+      deleted_at: {exists: false}
+    }
+  ) {
+    results {
+      id
+      external_id: property(name: "external_id")
+      object_id: property(name: "object_id")
+      object_owner: property(name: "object_owner")
+      amount: property(name: "amount")
+      currency: property(name: "currency")
+      estimated_days: property(name: "estimated_days")
+      messages: property(name: "messages")
+      provider: property(name: "provider")
+      carrier_account: property(name: "carrier_account")
+      provider_image_75: property(name: "provider_image_75")
+      provider_image_200: property(name: "provider_image_200")
+      duration_terms: property(name: "duration_terms")
+      shipment: property(name: "shipment")
+    }
+  }
+}

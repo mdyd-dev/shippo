@@ -1,0 +1,17 @@
+name: rate
+properties:
+  - name: external_id
+  - name: object_id
+  - name: object_owner
+  - name: amount
+    type: float
+  - name: currency
+  - name: estimated_days
+  - name: messages
+    type: array
+  - name: provider
+  - name: carrier_account
+  - name: provider_image_75
+  - name: provider_image_200
+  - name: duration_terms
+  - name: shipment
