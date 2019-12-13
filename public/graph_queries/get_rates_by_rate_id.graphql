@@ -1,9 +1,9 @@
-query get_rates_by_id($rate_id: ID!) {
+query get_rates_by_rate_id($rate_id: String!) {
   models(
     per_page: 20
     filter: {
       name: {value: "modules/shippo/rate"}
-      id: { value: $rate_id }
+      properties: { name: "object_id", value: $rate_id }
       deleted_at: {exists: false}
     }
   ) {

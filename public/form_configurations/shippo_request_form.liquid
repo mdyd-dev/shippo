@@ -50,7 +50,7 @@ default_payload: >
     {% else %}
       {
         "properties_attributes": {
-          "request_errors": "{{ response_data.errors }}"
+          "request_errors": "{{ response_data.errors | replace: '"', '\"' }}"
          }
       }
     {% endif %}
