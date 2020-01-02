@@ -15,3 +15,4 @@ properties:
   - name: provider_image_200
   - name: duration_terms
   - name: shipment
+  - name: rate_errors

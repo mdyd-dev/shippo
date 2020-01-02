@@ -15,13 +15,14 @@ query get_rates_by_eternal_id($external_id: String!) {
       amount: property(name: "amount")
       currency: property(name: "currency")
       estimated_days: property(name: "estimated_days")
-      messages: property(name: "messages")
+      messages: property_array(name: "messages")
       provider: property(name: "provider")
       carrier_account: property(name: "carrier_account")
       provider_image_75: property(name: "provider_image_75")
       provider_image_200: property(name: "provider_image_200")
       duration_terms: property(name: "duration_terms")
       shipment: property(name: "shipment")
+      rate_errors: property(name: "rate_errors")
     }
   }
 }
