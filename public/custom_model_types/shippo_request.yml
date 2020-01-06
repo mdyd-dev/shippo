@@ -1,12 +1,13 @@
 ---
 name: shippo_request
 properties:
-- name: data
-  type: string
-- name: request_type
-  type: string
-- name: response
-  type: string
-- name: request_errors
-  type: string
-
+  - name: data
+    type: string
+  - name: request_type
+    type: string
+  - name: response
+    type: string
+  - name: request_errors
+    type: string
+  - name: external_id
+    type: string

@@ -1,0 +1,25 @@
+query get_shippo_requests_by_external_id(
+  $external_id: String!
+  $request_type: String
+) {
+  models(
+    per_page: 20
+    filter: {
+      name: { value: "modules/shippo/shippo_request" }
+      properties: [
+        { name: "external_id", value: $external_id }
+        { name: "request_type", value: $request_type }
+      ]
+      deleted_at: { exists: false }
+    }
+  ) {
+    results {
+      id
+      external_id: property(name: "external_id")
+      data: property(name: "data")
+      request_type: property(name: "request_type")
+      response: property(name: "response")
+      request_errors: property(name: "request_errors")
+    }
+  }
+}
