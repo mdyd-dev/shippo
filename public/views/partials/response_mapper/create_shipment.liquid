@@ -26,6 +26,6 @@
   {% assign error = error | append: response_body.__all__.first %}
   {% assign error = error | append: response_body.detail %}
   {
-    "errors": {{ error | json }}
+    "errors": {{ error | default: "Error 500: Unable to fetch shipping rates" | json }}
   }
 {%- endif -%}
