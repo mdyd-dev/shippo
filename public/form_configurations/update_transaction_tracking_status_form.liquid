@@ -26,9 +26,6 @@ async_callback_actions:
     {%- if response.status == 200 -%}
       {% if response_body.tracking_status == 'DELIVERED' or response_body.tracking_status.status == 'DELIVERED' %}
         {% include "modules/shippo/actions/transaction/mark_as_delivered", transaction_id: form.id %}
-        {% include "modules/ecommerce/orders/actions/schedule_payout", order_id: form.properties.external_id %}
       {% endif %}
     {%- endif -%}
-
 ---
-
