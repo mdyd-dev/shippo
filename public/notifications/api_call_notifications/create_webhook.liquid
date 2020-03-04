@@ -1,0 +1,26 @@
+---
+name: create_webhook
+to: https://api.goshippo.com/webhooks
+enabled: true
+format: https
+trigger_condition: true
+request_type: Post
+callback: >
+  {%- assign response_data = response.body | to_hash -%}
+  {% if response_data.error %}
+    {%- log response_data.error, type: 'modules/shippo/create_webhook' -%}
+  {% endif %}
+headers: >
+  {% if data %}
+    {%- include 'modules/shippo/shared/api_credentials' -%}
+    {
+      "Content-Type": "application/json",
+      "Authorization": "ShippoToken {{ context.exports.shippo.api.token }}"
+    }
+  {% endif %}
+---
+{
+  "event": "{{ data.event }}",
+  "url": "{{ data.url }}",
+  "is_test": "{{ data.is_test }}"
+}

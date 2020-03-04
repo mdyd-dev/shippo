@@ -5,15 +5,56 @@ layout_name: ''
 authorization_policies:
 ---
 {% parse_json 'webhook_data' %}{{ context.post_params }}{% endparse_json %}
+{% log context.post_params, type: "modules/shippo/webhooks" %}
 
-{% if webhook_data.event == 'transaction_updated' %}
-  {% assign transaction = webhook_data.data %}
-  {% log context.post_params, type: "Webhook transaction" %}
-  {% graphql g_transactions = "modules/shippo/get_transaction", object_id: transaction.object_id %}
-  {% assign existing_transaction = g_transactions.customizations.results.first %}
-  {% if existing_trnsaction.id != blank %}
-    {% graphql g = "modules/shippo/update_transaction_tracking_status", existing_transaction.id %}
-  {% endif %}
-{% endif %}
+{% case webhook_data.event %}
+  {% when 'transaction_updated' %}
+    {% assign transaction = webhook_data.data %}
+    {% graphql existing_transaction = "modules/shippo/get_transaction",
+      object_id: transaction.object_id
+      | dig: 'customizations', 'results'
+      | first
+    %}
+    {% if existing_transaction.id != blank %}
+      {% graphql g = "modules/shippo/update_transaction",
+        id: existing_transaction.id,
+        status: transaction.status,
+        tracking_status: transaction.tracking_status,
+        eta: transaction.eta
+      %}
+    {% endif %}
+  {% when 'transaction_created' %}
+    {% assign transaction = webhook_data.data %}
+    {% graphql existing_transaction = "modules/shippo/get_transaction",
+      object_id: transaction.object_id
+      | dig: 'customizations', 'results'
+      | first
+    %}
+    {% if existing_transaction.id != blank %}
+      {% graphql g = "modules/shippo/update_transaction",
+        id: existing_transaction.id,
+        status: transaction.status,
+        tracking_status: transaction.tracking_status,
+        eta: transaction.eta
+      %}
+    {% endif %}
+  {% when 'track_updated' %}
+    {% assign transaction_id = webhook_data.data.transaction %}
+    {% graphql existing_transaction = "modules/shippo/get_transaction",
+      object_id: transaction_id
+      | dig: 'customizations', 'results'
+      | first
+    %}
+    {% if existing_transaction.id != blank %}
+      {% graphql g = "modules/shippo/update_transaction",
+        id: existing_transaction.id,
+        tracking_status: webhook_data.data.tracking_status.status,
+        tracking_status_details: webhook_data.data.tracking_status.status_details,
+        tracking_status_date: webhook_data.data.tracking_status.status_date,
+        eta: webhook_data.data.eta
+      %}
+    {% endif %}
+{% endcase %}
+
 
 

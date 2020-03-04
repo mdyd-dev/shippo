@@ -1,0 +1,20 @@
+---
+name: "update_transaction_form"
+resource: modules/shippo/transaction
+resource_owner: anyone
+fields:
+  properties:
+    status:
+    tracking_status:
+    tracking_status_details:
+    tracking_status_date:
+    eta:
+    object_id:
+    external_id:
+default_payload: ""
+authorization_policies:
+async_callback_actions:
+  delay: 0
+  content: >
+    {% include "shippo/update_transaction_webhook_async_callback", form: form %}
+---

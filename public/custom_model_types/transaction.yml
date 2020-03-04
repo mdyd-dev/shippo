@@ -1,18 +1,13 @@
 name: transaction
 properties:
   - name: status
-    type: string
   - name: object_id
-    type: string
   - name: external_id
-    type: string
   - name: rate_id
-    type: string
   - name: label_url
-    type: string
   - name: tracking_status
-    type: string
+  - name: tracking_status_details
+  - name: tracking_status_date
   - name: tracking_number
-    type: string
   - name: tracking_url_provider
-    type: string
+  - name: eta
