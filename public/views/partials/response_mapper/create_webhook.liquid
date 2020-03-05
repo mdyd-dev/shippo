@@ -1,0 +1,24 @@
+{%- parse_json 'response_body' -%}
+  {{ shippo_response.body }}
+{%- endparse_json -%}
+
+{%- if shippo_response.status == 201 -%}
+  {
+    {%- if response_body.error -%}
+      "errors": [
+        {"message": "{{ response_body.error.message }}"}
+      ],
+    {%- endif -%}
+    "properties": [
+      { "name": "object_id", "value": "{{ response_body.object_id }}" },
+      { "name": "event", "value": "{{ response_body.event }}" },
+      { "name": "url", "value": "{{ data.url }}" },
+      { "name": "is_test", "value_boolean": {{ response_body.is_test }} },
+      { "name": "active", "value_boolean": {{ response_body.active }} }
+    ]
+  }
+{%- else -%}
+  {
+    "errors": {{ response_body | json }}
+  }
+{%- endif -%}

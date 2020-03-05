@@ -1,0 +1,9 @@
+name: webhook
+properties:
+  - name: active
+    type: boolean
+  - name: is_test
+    type: boolean
+  - name: event
+  - name: url
+  - name: object_id

@@ -1,0 +1,12 @@
+{% assign shippo_response = shippo_response | to_hash %}
+
+{%- if shippo_response.status == 204 -%}
+  {
+    "id": "{{ data.id }}",
+    "object_id": "{{ data.object_id }}"
+  }
+{%- else -%}
+  {
+    "errors": {{ shippo_response.body | json }}
+  }
+{%- endif -%}
