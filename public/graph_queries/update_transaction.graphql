@@ -1,0 +1,25 @@
+mutation update_transaction(
+  $id: ID!
+  $status: String
+  $tracking_status: String
+  $tracking_status_details: String
+  $tracking_status_date: String
+  $eta: String
+) {
+  customization_update(
+    model: {
+      properties: [
+        { name: "status", value: $status },
+        { name: "tracking_status", value: $tracking_status },
+        { name: "tracking_status_details", value: $tracking_status_details },
+        { name: "tracking_status_date", value: $tracking_status_date },
+        { name: "eta", value: $eta }
+      ]
+    }
+    form_configuration_name: "modules/shippo/update_transaction_form"
+    id: $id
+  ) {
+    id
+    properties
+  }
+}

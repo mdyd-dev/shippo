@@ -1,0 +1,32 @@
+query get_webhooks(
+  $object_id: String
+  $per_page: Int = 100
+  $page: Int = 1
+  $active: Boolean
+  $is_test: Boolean
+) {
+  models(
+    per_page: $per_page
+    page: $page
+    filter: {
+      name: { value: "modules/shippo/webhook" }
+      deleted_at: { exists: false }
+      properties: [
+        { name: "object_id", value: $object_id }
+        { name: "active", value_boolean: $active }
+        { name: "is_test", value_boolean: $is_test }
+      ]
+    }
+    sort: { id: { order: DESC } }
+  ) {
+    results {
+      id
+      created_at
+      object_id: property(name: "object_id")
+      url: property(name: "url")
+      event: property(name: "event")
+      active: property_boolean(name: "active")
+      is_test: property_boolean(name: "is_test")
+    }
+  }
+}
