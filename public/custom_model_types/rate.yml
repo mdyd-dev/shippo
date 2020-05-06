@@ -9,7 +9,10 @@ properties:
   - name: estimated_days
   - name: messages
     type: array
+  - name: attributes
+    type: array
   - name: provider
+  - name: servicelevel_name
   - name: carrier_account
   - name: provider_image_75
   - name: provider_image_200
