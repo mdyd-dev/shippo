@@ -2,9 +2,9 @@ query get_rates_by_rate_id($rate_id: String!) {
   models(
     per_page: 20
     filter: {
-      name: {value: "modules/shippo/rate"}
+      name: { value: "modules/shippo/rate" }
       properties: { name: "object_id", value: $rate_id }
-      deleted_at: {exists: false}
+      deleted_at: { exists: false }
     }
   ) {
     results {
@@ -15,8 +15,10 @@ query get_rates_by_rate_id($rate_id: String!) {
       amount: property(name: "amount")
       currency: property(name: "currency")
       estimated_days: property(name: "estimated_days")
-      messages: property(name: "messages")
+      messages: property_array(name: "messages")
+      attributes: property_array(name: "attributes")
       provider: property(name: "provider")
+      servicelevel_name: property(name: "servicelevel_name")
       carrier_account: property(name: "carrier_account")
       provider_image_75: property(name: "provider_image_75")
       provider_image_200: property(name: "provider_image_200")

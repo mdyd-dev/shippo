@@ -2,9 +2,9 @@ query get_rates_by_eternal_id($external_id: String!) {
   models(
     per_page: 20
     filter: {
-      name: {value: "modules/shippo/rate"}
-      properties: [{name: "external_id", value: $external_id}]
-      deleted_at: {exists: false}
+      name: { value: "modules/shippo/rate" }
+      properties: [{ name: "external_id", value: $external_id }]
+      deleted_at: { exists: false }
     }
   ) {
     results {
@@ -16,7 +16,9 @@ query get_rates_by_eternal_id($external_id: String!) {
       currency: property(name: "currency")
       estimated_days: property(name: "estimated_days")
       messages: property_array(name: "messages")
+      attributes: property_array(name: "attributes")
       provider: property(name: "provider")
+      servicelevel_name: property(name: "servicelevel_name")
       carrier_account: property(name: "carrier_account")
       provider_image_75: property(name: "provider_image_75")
       provider_image_200: property(name: "provider_image_200")
