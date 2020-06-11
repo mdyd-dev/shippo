@@ -12,7 +12,7 @@ query get_rates_by_rate_id($rate_id: String!) {
       external_id: property(name: "external_id")
       object_id: property(name: "object_id")
       object_owner: property(name: "object_owner")
-      amount: property(name: "amount")
+      amount: property_float(name: "amount")
       currency: property(name: "currency")
       estimated_days: property(name: "estimated_days")
       messages: property_array(name: "messages")
