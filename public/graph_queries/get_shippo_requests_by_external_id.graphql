@@ -1,6 +1,7 @@
 query get_shippo_requests_by_external_id(
   $external_id: String!
   $request_type: String
+  $status: String
 ) {
   models(
     per_page: 20
@@ -9,6 +10,7 @@ query get_shippo_requests_by_external_id(
       properties: [
         { name: "external_id", value: $external_id }
         { name: "request_type", value: $request_type }
+        { name: "status", value: $status }
       ]
       deleted_at: { exists: false }
     }
