@@ -14,4 +14,4 @@
   {{- response.api_call_send.response.body -}}
 {%- endparse_json -%}
 {%- log response_object, type: "DEBUG Shippo address validation" %}
-{{ response_object.validation_results.is_valid }}
+{% return response_object %}
