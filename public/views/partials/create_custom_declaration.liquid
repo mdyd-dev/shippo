@@ -1,0 +1,6 @@
+{% graphql response = 'modules/shippo/shippo_request', data: data, template: 'modules/shippo/create_custom_declaration' %}
+{%- parse_json response_object -%}
+  {{- response.api_call_send.response.body -}}
+{%- endparse_json -%}
+{% log response_object, type: "DEBUG Shippo create custom declaration" %}
+{% return response_object %}
