@@ -1,0 +1,24 @@
+---
+name: create_custom_declaration
+to: https://api.goshippo.com/customs/declarations
+enabled: true
+format: https
+trigger_condition: true
+request_type: Post
+callback: >
+  {% liquid
+    assign response_data = response.body | to_hash
+    if response_data.error
+      log response_data.error, type: 'shippo api callback error: modules/shippo/create_custom_decalaration'
+    endif
+  %}
+headers: >
+  {% if data %}
+    {%- include 'modules/shippo/shared/api_credentials' -%}
+    {
+      "Content-Type": "application/json",
+      "Authorization": "ShippoToken {{ context.exports.shippo.api.token }}"
+    }
+  {% endif %}
+---
+{{ data | json }}
