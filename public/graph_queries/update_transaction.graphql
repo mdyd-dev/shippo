@@ -4,15 +4,17 @@ mutation update_transaction(
   $tracking_status: String
   $tracking_status_details: String
   $tracking_status_date: String
+  $commercial_invoice_url: String
   $eta: String
 ) {
   customization_update(
     model: {
       properties: [
-        { name: "status", value: $status },
-        { name: "tracking_status", value: $tracking_status },
-        { name: "tracking_status_details", value: $tracking_status_details },
-        { name: "tracking_status_date", value: $tracking_status_date },
+        { name: "status", value: $status }
+        { name: "tracking_status", value: $tracking_status }
+        { name: "tracking_status_details", value: $tracking_status_details }
+        { name: "tracking_status_date", value: $tracking_status_date }
+        { name: "commercial_invoice_url", value: $commercial_invoice_url }
         { name: "eta", value: $eta }
       ]
     }

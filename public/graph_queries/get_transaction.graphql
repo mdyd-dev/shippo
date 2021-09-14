@@ -3,8 +3,8 @@ query get_transaction($object_id: String!) {
     per_page: 20
     name: "modules/shippo/transaction"
     is_deleted: false
-    properties: [{name: "object_id", value: $object_id}]
-    sort: [{name: "id", order: "desc"}]
+    properties: [{ name: "object_id", value: $object_id }]
+    sort: [{ name: "id", order: "desc" }]
   ) {
     results {
       id
@@ -16,6 +16,7 @@ query get_transaction($object_id: String!) {
       tracking_number: property(name: "tracking_number")
       tracking_status: property(name: "tracking_status")
       label_url: property(name: "label_url")
+      commercial_invoice_url: property(name: "commercial_invoice_url")
     }
   }
 }

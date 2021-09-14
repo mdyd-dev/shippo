@@ -11,3 +11,4 @@ properties:
   - name: tracking_number
   - name: tracking_url_provider
   - name: eta
+  - name: commercial_invoice_url

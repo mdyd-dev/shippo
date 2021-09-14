@@ -4,5 +4,10 @@
   {{ transaction.tracking_number }}
   {{ transaction.tracking_status }}
   <a href="{{ transaction.label_url }}">Print Label</a>
+  {% if transaction.commercial_invoice_url %}
+    <a href="{{ transaction.commercial_invoice_url }}" target="_blank" class="link">
+      Print commercial invoice
+    </a>
+  {% endif %}
   </p>
 {% endfor %}

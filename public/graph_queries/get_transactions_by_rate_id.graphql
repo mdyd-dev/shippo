@@ -3,10 +3,10 @@ query get_transactions_by_rate_id($rate_id: String!) {
     per_page: 20
     filter: {
       model_schema_name: { value: "modules/shippo/transaction" }
-      deleted_at: { exists: false },
+      deleted_at: { exists: false }
       properties: { name: "rate_id", value: $rate_id }
     }
-    sort:{ id: { order: DESC } }
+    sort: { id: { order: DESC } }
   ) {
     results {
       id
@@ -19,6 +19,7 @@ query get_transactions_by_rate_id($rate_id: String!) {
       tracking_status: property(name: "tracking_status")
       tracking_url_provider: property(name: "tracking_url_provider")
       label_url: property(name: "label_url")
+      commercial_invoice_url: property(name: "commercial_invoice_url")
     }
   }
 }

@@ -20,6 +20,7 @@ authorization_policies:
         id: existing_transaction.id,
         status: transaction.status,
         tracking_status: transaction.tracking_status,
+        commercial_invoice_url: transaction.commercial_invoice_url,
         eta: transaction.eta
       %}
     {% endif %}
@@ -35,6 +36,7 @@ authorization_policies:
         id: existing_transaction.id,
         status: transaction.status,
         tracking_status: transaction.tracking_status,
+        commercial_invoice_url: transaction.commercial_invoice_url,
         eta: transaction.eta
       %}
     {% endif %}
@@ -51,6 +53,7 @@ authorization_policies:
         tracking_status: webhook_data.data.tracking_status.status,
         tracking_status_details: webhook_data.data.tracking_status.status_details,
         tracking_status_date: webhook_data.data.tracking_status.status_date,
+        commercial_invoice_url: webhook_data.data.commercial_invoice_url,
         eta: webhook_data.data.eta
       %}
     {% endif %}
